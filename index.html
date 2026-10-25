@@ -3,35 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tap Surprise</title>
+  <title>Socks</title>
   <style>
-    :root { --bg: #faf8f5; --ink: #222; --muted: #666; --card: #fff; }
-    @media (prefers-color-scheme: dark) {
+    :root { --bg: #fff; --ink: #222; --muted: #666; --card: #fff; }
+    /*@media (prefers-color-scheme: dark) {
       :root { --bg: #151515; --ink: #f0f0f0; --muted: #aaa; --card: #202020; }
-    }
+    }*/
     * { box-sizing: border-box; }
     body {
       margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
       background: var(--bg); color: var(--ink);
-      font-family: Georgia, "Times New Roman", serif;
+      font-family: 'Courier New', Courier, monospace;
     }
     main {
       width: 100%; max-width: 440px; margin: 1.5rem 16px; background: var(--card);
-      border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.12);
+     /* border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.12);*/
     }
     .photo {
-      width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
-      background: linear-gradient(135deg, #9aa9ff, #ffb5a7);
+      width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+     /* background: linear-gradient(135deg, #9aa9ff, #ffb5a7); */
     }
     .photo.placeholder { display: flex; align-items: center; justify-content: center;
-      font: 600 1rem system-ui, sans-serif; color: rgba(0,0,0,.45); }
+      font: 600 1rem 'Courier New', Courier, monospace; color: rgba(0,0,0,.45); }
     .text { padding: 1.25rem 1.5rem 1.5rem; }
     p { margin: 0 0 1.25rem; font-size: 1.1rem; line-height: 1.6; }
     button {
-      font: 600 .95rem system-ui, sans-serif; padding: .7rem 1.2rem; border: 0; border-radius: 999px;
+      font: 600 .95rem 'Courier New', Courier, monospace; padding: .7rem 1.2rem; border: 0;
       background: var(--ink); color: var(--bg); cursor: pointer;
     }
-    .hint { display: block; margin-top: .9rem; font: .8rem system-ui, sans-serif; color: var(--muted); }
+    .hint { display: block; margin-top: .9rem; font: .8rem 'Courier New', Courier, monospace; color: var(--muted); }
   </style>
 </head>
 <body>
@@ -39,8 +39,8 @@
     <div id="photo-slot"></div>
     <div class="text">
       <p id="paragraph"></p>
-      <button id="again" type="button">Show another</button>
-      <span class="hint">Tap the tag again for a new one.</span>
+      <button id="again" type="button">Fresh Socks</button>
+      <span class="hint">Press this button for a fresh pair of socks</span>
     </div>
   </main>
 
