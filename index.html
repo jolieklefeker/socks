@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tap Surprise</title>
+  <style>
+    :root { --bg: #faf8f5; --ink: #222; --muted: #666; --card: #fff; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #151515; --ink: #f0f0f0; --muted: #aaa; --card: #202020; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--bg); color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+    main {
+      width: 100%; max-width: 440px; margin: 1.5rem 16px; background: var(--card);
+      border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.12);
+    }
+    .photo {
+      width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
+      background: linear-gradient(135deg, #9aa9ff, #ffb5a7);
+    }
+    .photo.placeholder { display: flex; align-items: center; justify-content: center;
+      font: 600 1rem system-ui, sans-serif; color: rgba(0,0,0,.45); }
+    .text { padding: 1.25rem 1.5rem 1.5rem; }
+    p { margin: 0 0 1.25rem; font-size: 1.1rem; line-height: 1.6; }
+    button {
+      font: 600 .95rem system-ui, sans-serif; padding: .7rem 1.2rem; border: 0; border-radius: 999px;
+      background: var(--ink); color: var(--bg); cursor: pointer;
+    }
+    .hint { display: block; margin-top: .9rem; font: .8rem system-ui, sans-serif; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="photo-slot"></div>
+    <div class="text">
+      <p id="paragraph"></p>
+      <button id="again" type="button">Show another</button>
+      <span class="hint">Tap the tag again for a new one.</span>
+    </div>
+  </main>
+
+  <script>
+    // ---- EDIT THESE ------------------------------------------------------
+    // Put your images in an "images" folder next to this file and list them here.
+    // Add or remove lines as you like. Missing images show a colored placeholder.
+    const images = [
+      "images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg", "images/5.jpg",
+      "images/6.jpg", "images/7.jpg", "images/8.jpg", "images/9.jpg", "images/10.jpg"
+    ];
+
+    const paragraphs = [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio, et vestibulum nisl facilisis sed.",
+      "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+      "Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Maecenas faucibus mollis interdum.",
+      "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec ullamcorper nulla non metus auctor fringilla.",
+      "Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.",
+      "Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod."
+    ];
+    // ----------------------------------------------------------------------
+
+    const KEY = "lastPick";
+    const rand = n => Math.floor(Math.random() * n);
+
+    function lastPick() {
+      try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+    }
+    function savePick(p) {
+      try { localStorage.setItem(KEY, JSON.stringify(p)); } catch (e) {}
+    }
+    // Random choice that avoids repeating the previous one when possible
+    function pickDifferent(len, prev) {
+      if (len < 2 || prev === undefined) return rand(len);
+      let i;
+      do { i = rand(len); } while (i === prev);
+      return i;
+    }
+
+    function show() {
+      const prev = lastPick();
+      const imgIndex = pickDifferent(images.length, prev.img);
+      const txtIndex = pickDifferent(paragraphs.length, prev.txt);
+      savePick({ img: imgIndex, txt: txtIndex });
+
+      document.getElementById("paragraph").textContent = paragraphs[txtIndex];
+
+      const slot = document.getElementById("photo-slot");
+      slot.innerHTML = "";
+      const img = new Image();
+      img.className = "photo";
+      img.alt = "";
+      img.onerror = () => {
+        const ph = document.createElement("div");
+        ph.className = "photo placeholder";
+        ph.textContent = "Image " + (imgIndex + 1);
+        slot.innerHTML = "";
+        slot.appendChild(ph);
+      };
+      img.src = images[imgIndex];
+      slot.appendChild(img);
+    }
+
+    document.getElementById("again").addEventListener("click", show);
+    show();
+  </script>
+</body>
+</html>
